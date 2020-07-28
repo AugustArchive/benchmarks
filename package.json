@@ -1,8 +1,9 @@
 {
   "name": "@augu/benchmarks",
-  "description": "🐋 Type-safe and lightweight benchmarking library",
+  "description": "🐋 Lightweight benchmarking library made for personal use.",
   "version": "1.0.0",
   "main": "build/index.js",
+  "types": "index.d.ts",
   "files": [
     "build/",
     "index.d.ts"

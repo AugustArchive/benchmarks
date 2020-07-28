@@ -1,5 +1,5 @@
 # @augu/benchmarks
-> :whale2: **| Type-safe and lightweight way for benchmarking libraries.**
+> :whale2: **| Lightweight benchmarking library made for personal use.**
 
 ## Usage
 ```ts
