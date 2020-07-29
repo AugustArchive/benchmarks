@@ -75,12 +75,12 @@ declare module '@augu/benchmarks' {
       /**
        * Converts the values into a Table
        */
-      toTable(): string[][];
+      toTable(): any[][];
 
       /**
        * Converts the stats to a JSON object
        */
-      toJSON(): { [x: string]: { time: string, winner: boolean } };
+      toJSON(): { [x: string]: { time: number, winner: boolean } };
 
       /**
        * Gets the fastest benchmark

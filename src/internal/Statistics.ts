@@ -21,7 +21,6 @@
  */
 
 import BenchmarkResult from './BenchmarkResult';
-import humanize from '../util/humanize';
 import sortMap from '../util/sortMap';
 
 /**
@@ -43,15 +42,15 @@ export default class Statistics {
    * Converts the values into a Table
    */
   toTable() {
-    const table = [
-      ['Benchmark', 'Winner', 'Time Tooken']
+    const table: any[][] = [
+      ['Benchmark', 'Winner', 'Time']
     ];
 
     for (const [name, result] of this.results) {
       const winner = sortMap(this.results, (a, b) => a.time - b.time)[0];
 
       table.push([
-        name, winner.name, humanize(result.time)
+        name, winner.name, result.time
       ]);
     }
 
@@ -63,20 +62,20 @@ export default class Statistics {
    */
   toJSON() {
     const obj: {
-      [x: string]: { time: string, winner: boolean }
+      [x: string]: { time: number, winner: boolean }
     } = {};
 
     for (const [name, result] of this.results) {
       const isWinner = (sortMap(this.results, (a, b) => a.time - b.time)[0]).name === name;
       obj[name] = {
         winner: isWinner,
-        time: humanize(result.time)
+        time: result.time
       };
     }
 
     return obj;
   }
-
+  
   /**
    * Gets the fastest benchmark
    */

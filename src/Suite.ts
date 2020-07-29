@@ -22,10 +22,9 @@
 
 import { BenchmarkResult, Stats } from './internal';
 import { EventEmitter } from 'events';
-import { performance } from 'perf_hooks';
 
 /** Dud type of an empty function */
-type EmptyFunction = () => void | Promise<void>;
+type EmptyFunction = (next: () => void) => void;
 
 enum Status {
   Unknown = -1,
@@ -65,17 +64,23 @@ export class Suite extends EventEmitter {
    */
   async start() {
     if (!this.benchmarks.size) throw new Error('Benchmarks are non-existant');
+    if (this.status === Status.Ended) throw new Error('This suite has done it\'s benchmarks.');
 
     this.emit('started');
     this.status = Status.Running;
 
     const benchmarks = [...this.benchmarks.entries()];
-    let time = performance.now();
     const results = new Map<string, BenchmarkResult>();
 
-    for (const [name, func] of benchmarks) {
-      await func();
-      results.set(name, new BenchmarkResult({ name, time: (performance.now() - time) }));
+    while (benchmarks.length > 0) {
+      const [name, benchmark] = benchmarks.shift()!;
+      const time = process.hrtime();
+      benchmark(() => {
+        const awaitedTime = process.hrtime(time);
+        const t = parseFloat(String((awaitedTime[1] / 1000000 + awaitedTime[0] * 1000).toFixed(6)));
+
+        results.set(name, new BenchmarkResult({ name, time: t }));
+      });
     }
 
     this.status = Status.Ended;
