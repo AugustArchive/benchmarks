@@ -3,7 +3,7 @@ declare module '@augu/benchmarks' {
 
   namespace benchmarks {
     /** Dud type of an empty function */
-    type EmptyFunction = () => void | Promise<void>;
+    type EmptyFunction = (done: () => void) => void;
 
     enum Status {
       Unknown = -1,
